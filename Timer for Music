@@ -1,0 +1,55 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/19/2022 01:49:59 PM
+// Design Name: 
+// Module Name: timer
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+//`define maxTimeValue = 24'd5000000 
+
+module timer_p #(parameter maxTimeValue = 26'd50000000) (
+input i_clk,
+input i_reset,
+output reg freqOut
+    );
+    
+reg [25:0] TimerValue;
+
+always @(posedge i_clk or posedge i_reset)
+begin 
+    if (i_reset)
+        TimerValue <= 0;
+else if(TimerValue < maxTimeValue)
+begin 
+    TimerValue <= TimerValue + 1 'b1;
+end
+else
+    TimerValue <= 26'd0;
+end 
+    
+always @(posedge i_clk or posedge i_reset)
+begin 
+    if(i_reset)
+        freqOut <= 1'b0;
+    else
+    begin 
+        if(TimerValue == maxTimeValue)
+            freqOut <= ~freqOut;
+    end
+ end
+     
+endmodule
