@@ -1,0 +1,71 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/19/2022 02:29:02 PM
+// Design Name: 
+// Module Name: vga_top
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module vga_top(
+input clk,
+output h_sync,v_sync,
+output [3:0] red,green,blue,
+output life1,
+input switch, red_s,
+input yellow_s, green_s, blue_s,
+output [6:0] Y,
+output EnB,
+output EnC,
+output EnA,
+output EnD,
+output speaker,
+output l1,
+output l2,
+output l3,
+output l4,
+output l5
+    );
+    wire clk_d, clk_d2, v_trig, video_on;
+    wire [9:0] h_count;
+    wire[9:0] v_count;
+    wire[9:0] x_loc;
+    wire[9:0] y_loc;
+    wire[4:0] data;
+    wire[9:0] life;
+    wire score_y,score_g,score_r,score_b;
+    wire stop;
+    clk_div cd(clk,clk_d);
+    //clk_div2 cd2(clk,clk_d2);
+    h_counter hc(clk_d,h_count,v_trig);
+    v_counter vc(clk_d,v_trig,v_count);
+    vga_sync vgas(h_count,v_count,x_loc,y_loc,h_sync,v_sync,video_on);
+    
+    fibonacci_lfsr_5bit random(clk_d, data);
+//    assign life1=1;
+////    //life 1 is led
+    fpga_bcd ans1(.clk(clk),
+    .En(switch),.red(score_r),
+    .green(score_g),.blue(score_b),
+    .yellow(score_y),.Y(Y),.EnA(EnA),.EnB(EnB),.EnC(EnC),.EnD(EnD));
+    pixel_gen pg(clk_d,x_loc,y_loc,video_on,red,green,blue, switch, data, red_s, blue_s, yellow_s, green_s, life1,score_g,score_b,score_y,score_r);
+    piano ans4(.i_clk(clk),.i_reset(switch),.k1(red_s),.k2(blue_s),.k3(green_s),.k4(yellow_s),.speaker(speaker));
+    time_rn(.clk(clk),.ledone(l1),.led2(l2),.led3(l3),.led4(l4),.led5(l5),.signal_off(stop));
+//    if (life==1)
+//    begin
+//        assign life1=0;
+//    end
+endmodule
