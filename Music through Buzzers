@@ -1,0 +1,101 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/19/2022 03:03:31 PM
+// Design Name: 
+// Module Name: piano
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module piano(
+input i_clk,
+input i_reset,
+input k1,
+input k2,
+input k3,
+input k4,
+
+output reg speaker
+
+);
+
+reg trig;
+wire freq4k, freq8k, freq16k, freq32;
+initial trig=1;
+
+timer_p #(.maxTimeValue(25000)) t1
+(
+.i_clk(i_clk),
+.i_reset(i_reset),
+.freqOut(freq4k)
+);
+
+timer_p #(.maxTimeValue(12500)) t2
+(
+.i_clk(i_clk),
+.i_reset(i_reset),
+.freqOut(freq8k)
+);
+
+timer_p #(.maxTimeValue(3125)) t3
+(
+.i_clk(i_clk),
+.i_reset(i_reset),
+.freqOut(freq16k)
+);
+
+
+timer_p #(.maxTimeValue(6250)) t4
+(
+.i_clk(i_clk),
+.i_reset(i_reset),
+.freqOut(freq32k)
+);
+
+
+always @(*)
+begin 
+    if(!k1)
+   // if (trig==1)
+    begin
+        speaker = freq4k;
+       // trig<=0;
+    end    
+    else if (!k2)
+    //if (trig==1)
+    begin
+        speaker = freq8k;
+      //  trig<=0;
+    end    
+    else if (!k3)
+    //if (trig==1)
+    begin
+        speaker = freq16k;
+       // trig<=0;
+    end
+    else if (!k4)
+    //if (trig==1)
+    begin
+        speaker = freq32k;
+        //trig<=0;
+    end    
+//    else
+//    begin
+//        speaker = 1'b0; 
+//        //trig<=1;
+//    end    
+end
+endmodule
