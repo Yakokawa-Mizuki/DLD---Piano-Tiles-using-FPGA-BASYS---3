@@ -1,0 +1,288 @@
+`timescale 1ns / 1ps
+
+module pixel_gen( 
+
+    input clk_d, 
+    input [9:0] pixel_x, 
+    input [9:0] pixel_y, 
+    input video_on, 
+    output reg [3:0] red = 0, 
+    output reg [3:0] green = 0, 
+    output reg [3:0] blue = 0,
+    input button,
+    input [4:0] data, 
+    input red_s, blue_s, yellow_s, green_s, 
+    output reg life1,
+    output reg score_g,
+    output reg score_b,
+    output reg score_y,
+    output reg score_r
+    ); 
+    
+    reg [9:0]BAYMin = 70;
+    reg [9:0]BAYMax = 109;
+    reg[3:0] state = 0;
+    reg[3:0] Random = 0;
+    reg [9:0]counter = 600;
+    
+    reg [9:0]BAYMin2 = 70;
+    reg [9:0]BAYMax2 = 109;
+    
+    reg [9:0]BAYMin3 = 70;
+    reg [9:0]BAYMax3 = 109;
+    
+    reg [9:0]BAYMin4 = 70;
+    reg [9:0]BAYMax4 = 109;
+    
+    reg [9:0]counter2 = 600;
+    reg [9:0]counter3 = 600;
+    reg [9:0]counter4 = 600;
+    reg [9:0]counter5 = 600;
+    
+    reg [9:0] timer=540;
+    reg [9:0] life1check=1;
+    reg num_lives=4;
+    reg [9:0] number;
+    always @(posedge clk_d) 
+    begin
+    
+    //IMPLMENET THE GAME SCREEN
+    //reached the bottom of the screen 
+    if (button)  
+    number=(blue_s&yellow_s)?9000:((green_s&yellow_s)?9000:500);  
+    if (BAYMax == 432)
+    begin
+        //reest the values so it starts from top
+        BAYMin = 70;
+        BAYMax = 109;
+        //Random = ~Random;
+      
+    end 
+    if (BAYMax2==432)
+    begin
+        //reest the values so it starts from top
+
+        BAYMin2 = 70; BAYMax2 = 109;
+        //Random = ~Random;
+    end
+    if (BAYMax3==432)
+    begin
+        //reest the values so it starts from top
+        BAYMin3 = 70; BAYMax3 = 109;
+        //Random = ~Random;
+    end
+    if (BAYMax4==432)
+    begin
+        //reest the values so it starts from top
+        BAYMin4 = 70; BAYMax4 = 109;
+        //Random = ~Random;
+    end
+        //black border
+        if (pixel_x < 50 || pixel_x > 590 || pixel_y < 48 || pixel_y > 432 || (pixel_x>58 && pixel_x<588 && pixel_y>390 && pixel_y<392))
+            begin
+             
+                red <= 4'h0; 
+                blue <= 4'h0; 
+                green <= 4'h0; 
+                
+                
+                //DISPLAY TIMER
+                if ( timer!=0 && pixel_x > 100 && pixel_x < timer && pixel_y < 15 && pixel_y > 10)
+                begin
+                    red <= 4'h0; 
+                    blue <= 4'h0; 
+                    green <= 4'hF; 
+                    
+                    if (counter5 == 7500)
+                    begin
+                    
+                    timer = timer - 1;
+                    end
+                    
+                    else
+                    begin
+                        counter5<=counter5+1;
+                    end
+                    
+                end
+            end
+
+        else if (pixel_x > 58 && pixel_x < 183 && pixel_y > BAYMin && pixel_y < BAYMax && (data>=0 && data<=30))
+            begin
+                //red block
+                red <= 4'hF; 
+                blue <= 4'h0; 
+                green <= 4'h0; 
+                if (pixel_y>392 && pixel_y<423 && (red_s==0))
+                begin 
+    //                num_lives= num_lives-1;
+                score_r<=1;
+                end
+                else
+                begin
+                score_r<=0;
+                end
+//               if (life1check==1)
+//                    begin
+//                        life1=1;
+//                    end
+//               if (pixel_y>392 && pixel_y<423 && !red_s)
+//               begin 
+//               life1check=0;
+//                life1=0;
+//               end
+               
+               if (counter == 600)
+               begin
+                    BAYMin <= BAYMin + 1;
+                    BAYMax <= BAYMax + 1;
+                    counter = 0;
+               end
+               else
+               begin
+                    counter=counter+1;
+               end
+
+            end 
+            
+        else if ((pixel_x > 191 && pixel_x < 316 && pixel_y > BAYMin2 && pixel_y < BAYMax2) && (data>=8 && data<=15))
+            begin
+            //green block
+                red <= 4'h0; 
+                blue <= 4'h0; 
+                green <= 4'hF;
+                if (life1check==1)
+                    begin
+                        life1=1;
+                    end
+               if (pixel_y>392 && pixel_y<423 && (green_s==0))
+               begin 
+              // num_lives= num_lives-1;
+              score_g<=1;
+               end
+              else
+              begin
+              score_g<=0;   
+              end
+               if (counter2 == 600)
+               begin
+                    BAYMin2 <= BAYMin2 + 1;
+                    BAYMax2 <= BAYMax2 + 1;
+                    counter2 = 0;
+               end
+               else
+               begin
+                    counter2=counter2+1;
+               end
+            end 
+           
+        else if ((pixel_x > 324 && pixel_x < 449 && pixel_y > BAYMin3 && pixel_y < BAYMax3) && (data>=16 && data<=24))
+            begin
+                //blue block
+                red <= 4'h0; 
+                blue <= 4'hF; 
+                green <= 4'h0; 
+                if (pixel_y>392 && pixel_y<423 && (blue_s==0))
+                begin 
+                  //  num_lives= num_lives-1;
+                  score_b<=1;
+                end
+               else
+               begin
+               score_b<=0;
+               end 
+               if (counter3 == 600)
+               begin
+                    BAYMin3 <= BAYMin3 + 1;
+                    BAYMax3 <= BAYMax3 + 1;
+                    counter3 = 0;
+               end
+               else
+               begin
+                    counter3=counter3+1;
+               end
+
+            end 
+            
+        else if ((pixel_x > 457 && pixel_x < 582 && pixel_y > BAYMin4 && pixel_y < BAYMax4) && (data>=25 && data<31))
+            begin
+                //last block
+                red <= 4'hF; 
+                blue <= 4'h0; 
+                green <= 4'hF; 
+                if (pixel_y>392 && pixel_y<423 && (yellow_s==0))
+                begin 
+                   // num_lives= num_lives-1;
+                   score_y<=1;
+                end
+                else
+                begin
+                score_y<=0;
+                end
+               if (counter4 == 600)
+               begin
+                    BAYMin4 <= BAYMin4 + 1;
+                    BAYMax4 <= BAYMax4 + 1;
+                    counter4 = 0;
+               end
+               else
+               begin
+                    counter4=counter4+1;
+               end
+
+            end 
+        
+        else
+            //fill in the remaining screen with white
+            begin
+                red <= 4'hF; 
+                blue <= 4'hF; 
+                green <= 4'hF; 
+            end
+    
+    //IMPLEMENT HOME SCREEN
+   //IMPLEMENT HOME SCREEN
+    if (!button)
+    if (((pixel_x>=50 & pixel_x<=590) & (pixel_y>=20 & pixel_y<=70))||(pixel_x>=50 & pixel_x<=590 & pixel_y>=410& pixel_y<=460) || (pixel_x>=100 & pixel_x<=540 & pixel_y>=90 & pixel_y<=390))
+    begin
+    //andar walay rectangles
+        if ((pixel_x>=150 & pixel_x<=490 & pixel_y>=110 & pixel_y<=230) || (pixel_x>=150 & pixel_x<=490 & pixel_y>=250 & pixel_y<=370))
+            begin 
+            //letter E
+            if ((pixel_x>=260 & pixel_x<=300 & pixel_y>=115 & pixel_y<=190) || (pixel_x>=275 & pixel_x<=355 & pixel_y>=115 & pixel_y<=128) || (pixel_x>=275 & pixel_x<=355 & pixel_y>=141 & pixel_y<=159) || (pixel_x>=275 & pixel_x<=355 & pixel_y>=172 & pixel_y<=190))
+                begin
+                    red <=4'hF;
+                    green <=4'hF;
+                    blue <=4'h0;
+                end
+                //letter H
+             else if ((pixel_x>=260 & pixel_x<=300 & pixel_y>=300 & pixel_y<=360) || (pixel_x>=350 & pixel_x<=390 & pixel_y>=300 & pixel_y<=360) || (pixel_x>=300 & pixel_x<=350 & pixel_y>=320 & pixel_y<=340))
+                begin
+                    red <=4'hF;
+                    green <=4'hF;
+                    blue <=4'h0;
+                end
+                
+            else
+                begin
+                    red <=4'hF;
+                    green <=4'hF;
+                    blue <=4'hF;
+                end
+            end
+        else
+            begin
+                red <=4'hF;
+                green <=4'h0;
+                blue <=4'h0;
+            end
+    end
+else
+begin
+    red <=4'h0;
+    green <=4'hF;
+    blue <=4'h0;
+end
+    end
+    
+endmodule
