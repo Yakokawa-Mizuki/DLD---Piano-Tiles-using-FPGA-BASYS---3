@@ -1,0 +1,82 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 09/30/2022 04:40:45 PM
+// Design Name: 
+// Module Name: v_counter
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//`timescale 1ns/1ps
+
+//module v_counter(clk, trig_v,v_count);
+//input clk;
+//input trig_v;
+//output [9:0] v_count;
+//reg [9:0] v_count;
+//initial v_count=0;
+//always @ (posedge clk)
+//begin
+//    if (v_count<=523)
+//    begin
+//        if (trig_v==1)
+//        begin
+//            v_count=v_count+1;
+//        end
+//        else
+//        begin
+//            v_count=v_count;
+//        end
+//    else
+//    begin 
+//        v_count <= 0;
+//    end
+//end
+//endmodule
+`timescale 1ns / 1ps
+
+
+module v_counter(
+    clk,
+    enable_v,
+    v_count
+    
+    );
+    input clk;
+   output  [9:0] v_count;
+   input enable_v;
+
+   reg [9:0] v_count;
+   
+   initial v_count=0;
+   //assign enable_v = 0;
+   //initial trig_v=0;
+   always @ (posedge clk)
+        begin
+            if (enable_v == 1)
+                begin
+                    if (v_count<524)
+                        begin
+                            v_count <= v_count+1;
+                        end
+                    else
+                        begin
+                            v_count <= 0;
+                        end   
+                 end
+            else
+                begin
+                     v_count = v_count;
+                end
+        end             
+endmodule
