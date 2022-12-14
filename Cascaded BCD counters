@@ -1,0 +1,37 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 03.12.2022 01:10:41
+// Design Name: 
+// Module Name: 4 bit bcd
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module bcd_4(
+    input T,
+    input clk,
+    output wire [3:0] A,
+    output wire [3:0] B,
+    output wire [3:0] C,
+    output wire [3:0] D
+    );
+wire Aout,Bout,Cout,Dout;  
+bcd_counter ans1(.clk(clk),.T(T),.count(A),.out(Aout));
+bcd_counter ans2(.clk(clk),.T(Aout),.count(B),.out(Bout));
+bcd_counter ans3(.clk(clk),.T(Bout),.count(C),.out(Cout));
+bcd_counter ans4(.clk(clk),.T(Cout),.count(D),.out(Dout));
+
+endmodule
