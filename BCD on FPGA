@@ -1,0 +1,69 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 03.12.2022 21:55:41
+// Design Name: 
+// Module Name: fpga_bcd
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module fpga_bcd(
+    input clk,
+    input En,
+    input red,
+    input green,
+    input blue,
+    input yellow,
+    output [6:0] Y,
+    output EnA,
+    output EnB,
+    output EnC,
+    output EnD
+    );
+    reg [1:0] S;
+    wire clk_d;
+    reg T;   
+initial 
+begin
+S = 0;
+end 
+clk_div_ss mod00(clk, clk_d);
+//2 bit counter made below
+    always @ (posedge clk_d)
+    begin
+    T=red||green||blue||yellow;
+    if (S < 3)
+        begin
+            S <= S+ 1;
+    end 
+else if (S >= 3)
+begin
+     S <= 0;
+end 
+end
+//use the output of 2 bit counter as selector bits for MUX and DEMUX
+wire [3:0] O;
+wire [3:0] A;
+wire [3:0] B;
+wire [3:0] C;
+wire [3:0] D;
+bcd_4 newans1(.T(T),.clk(clk_d),.A(A),.B(B),.C(C),.D(D));
+MUX4 ans1(S, A, B, C, D, O);
+decoder ans2(O,Y);
+DMUX ans3(En, EnA, EnB, EnC, EnD, S); 
+
+
+endmodule
+
