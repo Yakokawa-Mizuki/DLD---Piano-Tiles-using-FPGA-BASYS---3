@@ -1,0 +1,37 @@
+if ((pixel_x>=100 & pixel_x<=250 & (pixel_y>=140 & pixel_y<=340)
+Begin
+If  (pixel_x>=125 & pixel_x<=225 & (pixel_y>=165 & pixel_y<=475)
+		Begin
+		    red <=4'h0;
+    green <=4'hF;
+    blue <=4'h0;
+	End 
+Else 
+Begin
+		    red <=4'h0;
+    green <=4'h0;
+    blue <=4'hF;
+end
+
+If  (pixel_x>=430 & pixel_x<=480 & pixel_y>=160 & pixel_y<=190)
+Begin 
+ 		   red <=4'h0;
+    green <=4'h0;
+    blue <=4'hF;
+		end
+
+If (pixel_x>=250 & pixel_x<=540 & pixel_y>=190& pixel_y<=290) 
+	Begin 
+		If ((pixel_x>=225 & pixel_x<=500 & pixel_y>=205 & pixel_y<=207) || (pixel_x>=225 & pixel_x<=500 & pixel_y>=221 & pixel_y<=223))
+		Begin
+		    red <=4'h0;
+    green <=4'hF;
+    blue <=4'h0;
+		End
+	end
+Else
+Begin 
+    red <=4'h0;
+    green <=4'h0;
+    blue <=4'h0;
+end
