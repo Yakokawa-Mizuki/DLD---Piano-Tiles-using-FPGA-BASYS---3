@@ -1,0 +1,52 @@
+`timescale 1ns / 1ps
+
+
+module time_rn(
+    input clk,
+    output reg ledone,
+    output reg led2,
+    output reg led3,
+    output reg led4,
+    output reg led5,
+    output reg signal_off
+    );
+wire clk_d;    
+reg [14:0] count;
+initial
+begin 
+count=0;
+end
+clk_div2(.clk(clk),.clk_d(clk_d));
+always @(posedge clk_d)
+begin
+count=count+1;
+if (count==30)
+begin
+ledone<=0;
+end
+if (count==60)
+begin
+led2<=0;
+end
+if (count==90)
+begin
+led3<=0;
+end
+if (count==120)
+begin
+led4<=0;
+end
+if (count==1500)
+begin
+led5<=0;
+signal_off<=1;    
+end
+else
+begin
+ledone=1;
+led2=1;
+led3=1;
+led4=1;
+end
+end
+endmodule
