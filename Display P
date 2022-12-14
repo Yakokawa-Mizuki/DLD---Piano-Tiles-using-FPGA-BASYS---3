@@ -1,0 +1,14 @@
+// P  code
+If ((pixel_x>=250 & pixel_x<=390 & pixel_y>=100 & pixel_y<=140) || (pixel_x>=250 & pixel_x<=390 & pixel_y>=200 & pixel_y<=240) || (pixel_x>=250 & pixel_x<=290 & pixel_y>=100 & pixel_y<=380) || (pixel_x>=350 & pixel_x<=390 & pixel_y>=100 & pixel_y<=240))
+Begin 
+ red <=4'h0;
+  green <=4'h0;
+  blue <=4'hF;
+End
+
+Else 
+Begin
+ red <=4'h0;
+  green <=4'h0;
+  blue <=4'h0;
+end
