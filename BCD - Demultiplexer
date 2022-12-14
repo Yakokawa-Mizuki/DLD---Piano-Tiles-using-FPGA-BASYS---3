@@ -1,0 +1,36 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/20/2022 05:00:53 AM
+// Design Name: 
+// Module Name: DMUX
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module DMUX(
+    input O,
+    output ENA,
+    output ENB,
+    output ENC,
+    output END,
+    input [1:0] S
+    );
+assign ENA = (S==2'b00) ? 1'b0:1'b1;
+assign ENB = (S==2'b01) ? 1'b0:1'b1;
+assign ENC = (S==2'b10) ? 1'b0:1'b1;
+assign END = (S==2'b11) ? 1'b0:1'b1;
+    
+endmodule
